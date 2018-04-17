@@ -64,20 +64,7 @@ class InstaPyError(Exception):
 class InstaPy:
     """Class to be instantiated to use the script"""
 
-    def __init__(self,
-                 username=None,
-                 password=None,
-                 nogui=False,
-                 selenium_local_session=True,
-                 use_firefox=False,
-                 page_delay=25,
-                 show_logs=True,
-                 headless_browser=False,
-                 proxy_address=None,
-                 proxy_chrome_extension=None,
-                 proxy_port=0,
-                 bypass_suspicious_attempt=False,
-                 multi_logs=False):
+    def __init__(self, username=None, password=None, nogui=False, selenium_local_session=True, use_firefox=False, page_delay=25, show_logs=True, headless_browser=False, proxy_address=None, proxy_chrome_extension=None, proxy_port=0, bypass_suspicious_attempt=False, multi_logs=False):
 
         if nogui:
             self.display = Display(visible=0, size=(800, 600))
@@ -223,6 +210,7 @@ class InstaPy:
         else:
             chromedriver_location = Settings.chromedriver_location
             chrome_options = Options()
+            chrome_options.add_argument('--incognito') ## added 'incognito' argument
             chrome_options.add_argument('--dns-prefetch-disable')
             chrome_options.add_argument('--no-sandbox')
             chrome_options.add_argument('--lang=en-US')
@@ -385,11 +373,7 @@ class InstaPy:
 
         return self
 
-    def set_user_interact(self,
-                          amount=10,
-                          percentage=100,
-                          randomize=False,
-                          media=None):
+    def set_user_interact(self, amount=10, percentage=100, randomize=False, media=None):
         """Define if posts of given user should be interacted"""
         if self.aborting:
             return self
@@ -459,11 +443,7 @@ class InstaPy:
 
         return self
 
-    def set_smart_hashtags(self,
-                           tags=None,
-                           limit=3,
-                           sort='top',
-                           log_tags=True):
+    def set_smart_hashtags(self, tags=None, limit=3, sort='top', log_tags=True):
         """Generate smart hashtags based on https://displaypurposes.com/"""
         """ranking, banned and spammy tags are filtered out."""
 
@@ -591,13 +571,7 @@ class InstaPy:
         self.like_by_followers_lower_limit = limit or 0
         return self
 
-
-
-    def like_by_locations(self,
-                          locations=None,
-                          amount=50,
-                          media=None,
-                          skip_top_posts=True):
+    def like_by_locations(self, locations=None, amount=50, media=None, skip_top_posts=True):
         """Likes (default) 50 images per given locations"""
         if self.aborting:
             return self
@@ -737,11 +711,7 @@ class InstaPy:
 
         return self
 
-    def comment_by_locations(self,
-                      locations=None,
-                      amount=50,
-                      media=None,
-                      skip_top_posts=True):
+    def comment_by_locations(self, locations=None, amount=50, media=None, skip_top_posts=True):
         """Likes (default) 50 images per given locations"""
         if self.aborting:
             return self
@@ -875,13 +845,7 @@ class InstaPy:
 
         return self
 
-    def like_by_tags(self,
-                     tags=None,
-                     amount=50,
-                     media=None,
-                     skip_top_posts=True,
-                     use_smart_hashtags=False,
-                     interact=False):
+    def like_by_tags(self, tags=None, amount=50, media=None, skip_top_posts=True, use_smart_hashtags=False, interact=False):
         """Likes (default) 50 images per given tag"""
         if self.aborting:
             return self
@@ -1211,11 +1175,7 @@ class InstaPy:
 
         return self
 
-    def interact_by_users(self,
-                          usernames,
-                          amount=10,
-                          randomize=False,
-                          media=None):
+    def interact_by_users(self, usernames, amount=10, randomize=False, media=None):
         """Likes some amounts of images for each usernames"""
         if self.aborting:
             return self
@@ -1477,12 +1437,7 @@ class InstaPy:
 
         return self
 
-    def follow_user_followers(self,
-                              usernames,
-                              amount=10,
-                              randomize=False,
-                              interact=False,
-                              sleep_delay=600):
+    def follow_user_followers(self, usernames, amount=10, randomize=False, interact=False, sleep_delay=600):
 
         userFollowed = []
         if not isinstance(usernames, list):
@@ -1527,12 +1482,7 @@ class InstaPy:
 
         return self
 
-    def follow_user_following(self,
-                              usernames,
-                              amount=10,
-                              randomize=False,
-                              interact=False,
-                              sleep_delay=600):
+    def follow_user_following(self, usernames, amount=10, randomize=False, interact=False, sleep_delay=600):
         userFollowed = []
         if not isinstance(usernames, list):
             usernames = [usernames]
@@ -1577,13 +1527,7 @@ class InstaPy:
 
         return self
 
-    def unfollow_users(self,
-                       amount=10,
-                       onlyInstapyFollowed=False,
-                       onlyInstapyMethod='FIFO',
-                       sleep_delay=600,
-                       onlyNotFollowMe=False,
-                       unfollow_after=None):
+    def unfollow_users(self, amount=10, onlyInstapyFollowed=False, onlyInstapyMethod='FIFO', sleep_delay=600, onlyNotFollowMe=False, unfollow_after=None):
         """Unfollows (default) 10 users from your following list"""
         
         if unfollow_after is not None:
@@ -1630,11 +1574,7 @@ class InstaPy:
         self.like_by_feed_generator(**kwargs)
         return self
 
-    def like_by_feed_generator(self,
-                     amount=50,
-                     randomize=False,
-                     unfollow=False,
-                     interact=False):
+    def like_by_feed_generator(self, amount=50, randomize=False, unfollow=False, interact=False):
         """Like the users feed"""
 
         if self.aborting:
@@ -1873,12 +1813,7 @@ class InstaPy:
         with open('{}followed.txt'.format(self.logfolder), 'w') as followFile:
             followFile.write(str(self.followed))
 
-    def follow_by_tags(self,
-                     tags=None,
-                     amount=50,
-                     media=None,
-                     skip_top_posts=True,
-                     use_smart_hashtags=False):
+    def follow_by_tags(self, tags=None, amount=50, media=None, skip_top_posts=True, use_smart_hashtags=False):
         if self.aborting:
             return self
 
